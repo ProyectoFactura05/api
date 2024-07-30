@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDTO {
+
     @NotBlank(message = "El nombre no puede ser nulo")
     private String nombre;
     @NotBlank(message = "El numero de contaxcto no peude ser nulo")
