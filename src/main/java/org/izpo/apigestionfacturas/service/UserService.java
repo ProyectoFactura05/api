@@ -3,11 +3,18 @@ package org.izpo.apigestionfacturas.service;
 import lombok.AllArgsConstructor;
 import org.izpo.apigestionfacturas.exception.BadRequestException;
 import org.izpo.apigestionfacturas.mapper.UserMapper;
+import org.izpo.apigestionfacturas.model.dto.LoginResponseDTO;
+import org.izpo.apigestionfacturas.model.dto.LoginRequestDTO;
 import org.izpo.apigestionfacturas.model.dto.UserRequestDTO;
 import org.izpo.apigestionfacturas.model.dto.UserResponseDTO;
 import org.izpo.apigestionfacturas.model.entity.User;
 import org.izpo.apigestionfacturas.repository.UserRepository;
+import org.izpo.apigestionfacturas.security.jwt.CustomerDetailsService;
+import org.izpo.apigestionfacturas.security.jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +24,12 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private CustomerDetailsService customerDetailsService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) {
         User newUser = new User();
@@ -31,5 +44,25 @@ public class UserService {
         newUser.setRol("Usuario Comun");
         newUser.setEstado("false");
         return userMapper.convertToDTO(userRepository.save(newUser));
+    }
+    public LoginResponseDTO loginUser(LoginRequestDTO loginRequestDTO) {
+        try{
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(),loginRequestDTO.getPassword())
+            );
+            if(authentication.isAuthenticated()){
+                if(customerDetailsService.getUserDetails().getEstado().equalsIgnoreCase("true")){
+                    String token = jwtUtil.generateToken(customerDetailsService.getUserDetails().getEmail(),
+                            customerDetailsService.getUserDetails().getRol());
+                    LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+                    loginResponseDTO.setToken(token);
+                    return loginResponseDTO;
+                }
+            }
+            throw new BadRequestException("Las credenciales swon incorrectas");
+        }
+        catch(Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
     }
 }

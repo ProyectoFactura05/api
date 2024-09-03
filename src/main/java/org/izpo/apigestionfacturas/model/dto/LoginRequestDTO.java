@@ -2,8 +2,10 @@ package org.izpo.apigestionfacturas.model.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
-public class LoginResquestDTO {
+@Data
+public class LoginRequestDTO {
     @Email(message = "tiene que tener la estructura de un ")
     private String email;
     @NotBlank(message = "El password no puede ser nulo")

@@ -1,4 +1,4 @@
-package org.izpo.apigestionfacturas.jwt;
+package org.izpo.apigestionfacturas.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;

@@ -1,4 +1,4 @@
-package org.izpo.apigestionfacturas.jwt;
+package org.izpo.apigestionfacturas.security.jwt;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

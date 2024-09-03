@@ -1,4 +1,4 @@
-package org.izpo.apigestionfacturas.jwt;
+package org.izpo.apigestionfacturas.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    private String secret = "xd";
+    private String secret = "";
 
     public String extractUsername(String token) {
         return getClaim(token, Claims::getSubject);
