@@ -46,12 +46,12 @@ public class UserService {
         return userMapper.convertToDTO(userRepository.save(newUser));
     }
     public LoginResponseDTO loginUser(LoginRequestDTO loginRequestDTO) {
-        try{
+        try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(),loginRequestDTO.getPassword())
-            );
-            if(authentication.isAuthenticated()){
-                if(customerDetailsService.getUserDetails().getEstado().equalsIgnoreCase("true")){
+                    new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()));
+
+            if (authentication.isAuthenticated()) {
+                if (customerDetailsService.getUserDetails().getEstado().equalsIgnoreCase("true")) {
                     String token = jwtUtil.generateToken(customerDetailsService.getUserDetails().getEmail(),
                             customerDetailsService.getUserDetails().getRol());
                     LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
@@ -59,10 +59,10 @@ public class UserService {
                     return loginResponseDTO;
                 }
             }
-            throw new BadRequestException("Las credenciales swon incorrectas");
-        }
-        catch(Exception e){
-            throw new BadRequestException(e.getMessage());
+            throw new BadRequestException("Las credenciales son incorrectas o el usuario no está activo.");
+        } catch (Exception e) {
+            throw new BadRequestException("Error durante la autenticación: " + e.getMessage());
         }
     }
+
 }

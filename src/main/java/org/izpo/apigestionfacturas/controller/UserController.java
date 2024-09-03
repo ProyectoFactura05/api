@@ -1,5 +1,7 @@
 package org.izpo.apigestionfacturas.controller;
 
+import org.izpo.apigestionfacturas.model.dto.LoginRequestDTO;
+import org.izpo.apigestionfacturas.model.dto.LoginResponseDTO;
 import org.izpo.apigestionfacturas.model.dto.UserRequestDTO;
 import org.izpo.apigestionfacturas.model.dto.UserResponseDTO;
 import org.izpo.apigestionfacturas.service.UserService;
@@ -22,6 +24,12 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> registerUser(@RequestBody @Validated UserRequestDTO userRequestDTO){
         UserResponseDTO userResponseDTO = userService.registerUser(userRequestDTO);
         return new ResponseEntity<>(userResponseDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody @Validated LoginRequestDTO loginRequestDTO){
+        LoginResponseDTO token = userService.loginUser(loginRequestDTO);
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
 }
