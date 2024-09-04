@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    private String secret = "";
+    private String secret = "izpospringboot";
 
     public String extractUsername(String token) {
         return getClaim(token, Claims::getSubject);

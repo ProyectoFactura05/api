@@ -64,5 +64,8 @@ public class UserService {
             throw new BadRequestException("Error durante la autenticación: " + e.getMessage());
         }
     }
-
+    public UserResponseDTO getUserByEmail(String email){
+        User user = userRepository.findByUsername(email).orElseThrow(() -> new RuntimeException("Usuario no encontrado con el email:" + email));
+        return userMapper.convertToDTO(user);
+    }
 }
