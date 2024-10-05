@@ -17,18 +17,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody @Validated UserRequestDTO userRequestDTO){
-        UserResponseDTO userResponseDTO = userService.registerUser(userRequestDTO);
-        return new ResponseEntity<>(userResponseDTO, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody @Validated LoginRequestDTO loginRequestDTO){
-        LoginResponseDTO token = userService.loginUser(loginRequestDTO);
-        return new ResponseEntity<>(token, HttpStatus.OK);
-    }
-
     @GetMapping("/getUser/{email}")
     public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable("email") String username){
         UserResponseDTO user = userService.getUserByEmail(username);
