@@ -86,11 +86,11 @@
             <artifactId>pdfbox</artifactId>
             <version>2.0.28</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
+        <!-- Para Reportes -->
         <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itextpdf</artifactId>
-            <version>5.5.13.3</version>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.20.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>

@@ -3,6 +3,7 @@ package org.izpo.apigestionfacturas.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,12 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    private String secret = "";
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private long expirationTime;  ;
 
     public String extractUsername(String token) {
         return getClaim(token, Claims::getSubject);
@@ -46,7 +52,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 100 *60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(SignatureAlgorithm.HS256,secret).compact();
     }
     public Boolean validateToken(String token, UserDetails userDetails) {
